@@ -9,7 +9,6 @@ function parseBandNames(response){
 	response.Similar.Results.forEach(band => {
 		bandArr.push(band.Name);
 	}); 
-
 	return bandArr;
 }
 
@@ -17,7 +16,8 @@ function generateRandomNumber(response){
 	return Math.floor(Math.random() * response.data.length);
 
 }
-var bandName = encodeBandName("Iron Maiden")
+var bandNameBeforeEncoding = "Iron Maiden"
+var bandName = encodeBandName(bandNameBeforeEncoding)
 
 
 // var queryURL = 'https://api.deezer.com/track/119606&output=jsonp'
@@ -25,21 +25,20 @@ var bandName = encodeBandName("Iron Maiden")
 
 function generateSimilarBandList(){
 	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
-
 	$.ajax({
 		url: queryURL, 
 		type: "GET",
 		dataType: 'jsonp',
 		success: function(response){
 			var bandNameArr = parseBandNames(response);
+			console.log(bandNameArr);
 			getArtistTrackList(bandNameArr);
 		}
 	}); 
 }
 
 function getArtistTrackList(bandNameArr){
-	artistObjArr = []; 
-	bandNameArr.forEach(bandname => {
+	bandNameArr.forEach(bandname =>{
 		var queryURL = `https://api.deezer.com/search?q=${bandname}&output=jsonp`; 
 		$.ajax({
 			url: queryURL,
@@ -55,28 +54,38 @@ function getArtistTrackList(bandNameArr){
 					tracklist: response.data[albumNumber].album.tracklist, 
 
 				}
-				artistObjArr.push(artistObj);
-				getTrack(artistObjArr);
-			}
+				getTrack(artistObj);
+			},
 		})
 	})
 }
 
-function getTrack(artistObjArr){
-	artistObjArr.forEach(artist => {
-		console.log(artist)
-		var queryURL = artist.tracklist;
-		console.log(queryURL);
-		$.ajax({
-			url: queryURL, 
-			type: "GET",
-			dataType: 'jsonp', 
-			success: function(response){
-				console.log(response);
-			}
-		})
-	})
+function getTrack(artistObj){
+	var queryURL = `${artistObj.tracklist}&output=jsonp`;
+	$.ajax({
+		url: queryURL, 
+		type: "GET",
+		dataType: 'jsonp', 
+		success: function(response){
+			var trackNum = generateRandomNumber(response);
+			artistObj.track = response.data[trackNum].title;
+			artistObj.preview = response.data[trackNum].preview; 
 
+			console.log(artistObj);
+
+			addToMixTape(artistObj);
+			
+		}
+	})
 }
 
+function addToMixTape(artistObj){
+	var container = $(".container") 
+
+	var row = ($("<div>")).attr({"class": "row"})
+	row.append($("<h1>")).text(artistObj.name)
+
+	container.append(row)
+
+}
 generateSimilarBandList();
