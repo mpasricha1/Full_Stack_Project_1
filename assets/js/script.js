@@ -77,7 +77,6 @@ function getTrack(artistObj){
 
 function addToMixTape(artistObj){
 	var container = $("#mixTapeList"); 
-	var songCount = 1;
 
 	var row = $("<div>").attr({"class": "row"})
 	var imgCol = $("<div>").attr({"class": "four"})
@@ -86,8 +85,8 @@ function addToMixTape(artistObj){
 	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
 	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
 	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
-	var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${songCount}`})
-	var songButton = $("<button>").attr({"class":"playsong", "id":songCount})
+	var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${artistObj.albumId}`, "data-track": artistObj.track})
+	var songButton = $("<button>").attr({"class":"playsong", "id":artistObj.albumId, "data-track": artistObj.track})
 
 	imgCol.append(albumImg); 
 	textCol.append(albumArtist,albumSong, songLink, songButton);
@@ -95,7 +94,6 @@ function addToMixTape(artistObj){
 
 	row.append(imgCol, textCol)
 	container.append(row)
-	songCount++;
 
 }
 
