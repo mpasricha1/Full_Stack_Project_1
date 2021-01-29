@@ -9,6 +9,15 @@ $('#searchBtn').on("click",function(){
 	generateSimBandList(name)
 });
 
+// WORK ON PLAYLIST NAME FUNCTIONALITY
+// $('#submitName').on("click",function createH1Element(text) 
+// {
+//     var h = document.createElement("H1");
+//     var t = document.createTextNode(text); 
+//     h.appendChild(t); 
+//     document.body.appendChild(h);
+// });
+
 function generateSimBandList(name){
 	var queryURL = `https://tastedive.com/api/similar?q=${name}&k=${APIKey}`
 	$.ajax({
@@ -76,3 +85,19 @@ function getTrack(ArtistObj){
 		}
 	})
 }
+
+function addToMixTape(artistObj){
+	var container = $("#mixTapeList");
+	var row = $("<div>").attr({"class": "row"})
+	var imgCol = $("<div>").attr({"class": "four"})
+	var textCol = $("<div>").attr({"class": "eight"})
+	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
+	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
+	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
+	imgCol.append(albumImg);
+	textCol.append(albumArtist,albumSong);
+	row.append(imgCol, textCol)
+	container.append(row)
+};
+
+// generateSimilarBandList();
