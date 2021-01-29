@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title>Project 1</title>
@@ -12,4 +12,41 @@
 </body>
 	<div class="container">
 	</div>
+</html>
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project 1</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="assets/css/style.css" />
+	<link rel="stylesheet" href="assets/css/normalize.css" />
+	<link rel="stylesheet" href="assets/css/skeleton.css" />
+</head>
+<body>
+	
+	<div class="container">
+		<h1>Mix Tape Maker</h1>
+		<div class="row">
+			<div class="six">
+				<input class="u-full-width" placeholder="artist or genre" id="searchParameter">
+			</div>
+			<div class="six">
+				<button id=searchBtn class="button-primary" type="submit" value="submit">Submit</button>
+			</div>
+		</div>
+		<div class="row" id="mixTapeLabel">
+			<div class="six">
+				<input class="u-full-width" placeholder="Name your Mix Tape" id="mixTapeName">
+			</div>
+			<div class="six">
+				<input id=submitName class="button-primary" type="submit" value="submit">
+			</div>
+		</div>
+	</div>
+	<div class="container" id="mixTapeList">
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="assets/js/script.js"></script>
+</body>
 </html>

@@ -1,6 +1,5 @@
 var APIKey = '400264-project1-2ZU40HSL'
-var unencodedBandName = "Chuck Ragan"
-var bandName = encodeBandName(unencodedBandName)
+var unencodedBandName = ''
 
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
@@ -20,7 +19,7 @@ function generateRandomNumber(response){
 
 }
 
-function generateSimilarBandList(){
+function generateSimilarBandList(bandName){
 	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
 	$.ajax({
 		url: queryURL, 
@@ -77,13 +76,40 @@ function getTrack(artistObj){
 }
 
 function addToMixTape(artistObj){
-	var container = $(".container") 
+	var container = $("#mixTapeList"); 
+	var songCount = 1;
 
-	var row = ($("<div>")).attr({"class": "row"})
-	row.append($("<h1>")).text(artistObj.name)
+	var row = $("<div>").attr({"class": "row"})
+	var imgCol = $("<div>").attr({"class": "four"})
+	var textCol = $("<div>").attr({"class": "eight"})
 
+	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
+	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
+	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
+	var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${songCount}`})
+	var songButton = $("<button>").attr({"class":"playsong", "id":songCount})
+
+	imgCol.append(albumImg); 
+	textCol.append(albumArtist,albumSong, songLink, songButton);
+
+
+	row.append(imgCol, textCol)
 	container.append(row)
+	songCount++;
 
 }
 
-generateSimilarBandList();
+$("#searchBtn").on("click", function(event){
+	unencodedBandName = $("#searchParameter").val();
+	var bandName = encodeBandName(unencodedBandName);
+	generateSimilarBandList(bandName);
+})
+
+$(document).on("click", ".playsong", function(){
+	var songId = $(this)[0].id
+	console.log(songId)
+	var song = $(`#song${songId}`)
+	console.log(song)
+	song[0].play();
+	
+});
