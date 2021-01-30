@@ -99,6 +99,12 @@ function addToMixTape(artistObj){
 
 }
 
+function playSong(){
+	var currentSong = $("#song")
+	currentSong.attr({"src":songArr[songIndex]});
+	currentSong[0].play();		
+}
+
 $("#searchBtn").on("click", function(event){
 	unencodedBandName = $("#searchParameter").val();
 	var bandName = encodeBandName(unencodedBandName);
@@ -107,24 +113,18 @@ $("#searchBtn").on("click", function(event){
 
 
 $("#play").on("click", function(){
-	var currentSong = $("#song")
-	currentSong.attr({"src":songArr[songIndex]});
-	console.log(currentSong);
-	currentSong[0].play();		
+	playSong();
 });
 
 $("#song").on("ended", function(){
 	if(songIndex < songArr.length){
 		setTimeout(function(){
-			var currentSong = $("#song")
 			songIndex++;
-			currentSong.attr({"src":songArr[songIndex]});
-			console.log(currentSong);
-			currentSong[0].play();
-		},2000);
-		
+			playsong();
+		},1000);	
 	}else{
 		songIndex = 0;
+		playsong();
 	}
 	
 });
