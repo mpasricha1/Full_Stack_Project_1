@@ -1,5 +1,6 @@
 var APIKey = '400264-project1-2ZU40HSL';
 var unencodedBandName = '';
+var playlistName = '';
 var songArr = [];
 var songIndex = 0;
 
@@ -72,7 +73,6 @@ function getTrack(artistObj){
 			console.log(artistObj);
 
 			addToMixTape(artistObj);
-			
 		}
 	});
 };
@@ -129,7 +129,10 @@ function prevSong(){
 }
 
 $("#searchBtn").on("click", function(event){
+	event.preventDefault();
 	unencodedBandName = $("#searchParameter").val();
+	playlistName = $("#userMixTapeName").val(); 
+	console.log(playlistName);
 	var bandName = encodeBandName(unencodedBandName);
 	generateSimilarBandList(bandName);
 });
@@ -150,12 +153,3 @@ $("#song").on("ended", function(){
 		playSong();
 	}	
 });
-
-// $(document).on("click", ".playsong", function(){
-// 	var songId = $(this)[0].id
-// 	console.log(songId)
-// 	var song = $(`#song${songId}`)
-// 	console.log(song)
-// 	song[0].play();
-	
-// });
