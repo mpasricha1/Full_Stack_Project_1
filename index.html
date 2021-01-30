@@ -3,13 +3,16 @@
 <head>
 	<title>Project 1</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="assets/css/style.css" />
 	<link rel="stylesheet" href="assets/css/normalize.css" />
 	<link rel="stylesheet" href="assets/css/skeleton.css" />
+	<link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 	<audio id="song" hidden src="" type="audio/mpeg"></audio>
 	<div class="container">
+		<div class="four columns" id="savedPlaylistDisplay">
+			<label for="savedPlaylistDisplay">Previous Searches</label>	
+		</div>
 		<div class="eight columns">
 			<div class="container">
 				<h1>Mix Tape Maker</h1>	
@@ -27,10 +30,6 @@
 					<input class="button-primary" type="submit" value="Submit" id="searchBtn">
 				</form>
 			</div>
-			<button id="prev">Previous</button>
-			<button id="play">Play</button>
-			<button id="stop">Stop</button>
-			<button id="next">Next</button>
 			<div class="container" id="mixTapeList">
 				
 			</div>
