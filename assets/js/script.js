@@ -4,6 +4,7 @@ var playlistName = '';
 var songArr = [];
 var songIndex = 0;
 var savedPlaylist =[];
+var songToPlay = '';
 
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
@@ -45,6 +46,7 @@ function getArtistTrackList(bandNameArr){
 			type: "GET", 
 			dataType: 'jsonp', 
 			success: function(response){
+				console.log(response)
 				var albumNumber = generateRandomNumber(response)
 				var artistObj = {
 					artistId: response.data[albumNumber].artist.id,
@@ -52,6 +54,7 @@ function getArtistTrackList(bandNameArr){
 					name: response.data[albumNumber].artist.name, 
 					albumPicture: response.data[albumNumber].album.cover_small,
 					tracklist: response.data[albumNumber].album.tracklist, 
+					albumName: response.data[albumNumber].album.title
 
 				}
 				getTrack(artistObj);
@@ -71,8 +74,6 @@ function getTrack(artistObj){
 			artistObj.track = response.data[trackNum].title;
 			artistObj.preview = response.data[trackNum].preview; 
 
-			console.log(artistObj);
-
 			addToMixTape(artistObj, false);
 		}
 	});
@@ -82,19 +83,24 @@ function addToMixTape(artistObj, dontAppend){
 	var container = $("#mixTapeList"); 
 
 	var row = $("<div>").attr({"class": "row"});
-	var imgCol = $("<div>").attr({"class": "four"});
-	var textCol = $("<div>").attr({"class": "eight"});
+	var imgCol = $("<div>").attr({"class": "one column"});
+	var trackTitle = $("<div>").attr({"class": "three columns"});
+	var artistName = $("<div>").attr({"class": "three columns"});
+	var albumName = $("<div>").attr({"class": "three columns"});
 
-	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
-	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
-	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
-	songArr.push(artistObj.preview);
+	var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
+	var albumArtist = $("<p>").html(artistObj.name);
+	var albumSong = $("<p>").html(artistObj.track);
+	var albumName = $("<p>").html(artistObj.albumName);
+
+	// songArr.push(artistObj.preview);
 
 
 	imgCol.append(albumImg); 
-	textCol.append(albumArtist,albumSong);
+	trackTitle.append(albumSong);
+	artistName.append(albumArtist);
 
-	row.append(imgCol, textCol);
+	row.append(imgCol, trackTitle, artistName, albumName);
 	container.append(row);
 
 	if(dontAppend === true){
@@ -131,16 +137,23 @@ function displaySavedPlaylists() {
 
 }
 
+function getCurrentSong(){
+	songArr = JSON.parse(localStorage.getItem(playlistName)); 
+	currentSong = songArr[songIndex]; 
+	console.log(currentSong);
+
+	return currentSong;
+}
+
 function playSong(){
 	var currentSong = $("#song");
-	console.log(songArr);
-	currentSong.attr({"src":songArr[songIndex]});
+	songToPlay = getCurrentSong();
+	currentSong.attr({"src":songToPlay.preview});
 	currentSong[0].play();		
 }
 
 function stopSong(){
 	var currentSong = $("#song");
-	console.log(currentSong.currentTime);
 	currentSong[0].pause();
 }
 
@@ -156,7 +169,6 @@ function nextSong(){
 function prevSong(){
 	if(songIndex === 0){
 		songIndex = songArr.length-1;
-		console.log(songIndex)
 	}else{
 		songIndex--; 
 	} 
@@ -173,6 +185,7 @@ function clearGlobals(){
 $("#searchBtn").on("click", function(event){
 	event.preventDefault();
 	clearGlobals();
+	stopSong();
 
 	unencodedBandName = $("#searchParameter").val();
 	playlistName = $("#userMixTapeName").val(); 
@@ -205,8 +218,9 @@ $("#song").on("ended", function(){
 });
 
 $(document).on("click", ".previousList", function(){
-    var playlistName = $(this).val();
+    playlistName = $(this).val();
   
-    clearGlobals()
+    clearGlobals();
+    stopSong();
     getSavedPlaylist(playlistName);
 });
