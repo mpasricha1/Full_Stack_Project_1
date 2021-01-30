@@ -115,9 +115,6 @@ function stopSong(){
 	currentSong[0].pause();
 }
 
-	row.append(imgCol, textCol)
-	container.append(row)
-
 function nextSong(){
 	if(songIndex === songArr.length-1){
 		songIndex = 0;
