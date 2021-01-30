@@ -88,11 +88,6 @@ function addToMixTape(artistObj){
 	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
 	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
 	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
-	var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${artistObj.albumId}`, "data-track": artistObj.track})
-	var songButton = $("<button>").attr({"class":"playsong", "id":artistObj.albumId, "data-track": artistObj.track})
-	var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
-	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`);
-	var albumSong = $("<p>").html(`Album: ${artistObj.track}`);
 	songArr.push(artistObj.preview);
 
 
