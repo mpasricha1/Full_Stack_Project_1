@@ -3,42 +3,50 @@
 <head>
 	<title>Project 1</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="assets/css/normalize.css" />
+	<link rel="stylesheet" href="assets/css/skeleton.css" />
 	<link rel="stylesheet" href="assets/css/style.css" />
 	<link rel="stylesheet" href="assets/css/normalize.css" />
 	<link rel="stylesheet" href="assets/css/skeleton.css" />
 </head>
 <body>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="assets/js/script.js"></script>
+	<audio id="song" hidden src="" type="audio/mpeg"></audio>
 	<div class="container">
-	
-		<h1>Mix Tape Maker</h1>
-		<div class="row">
-			<div class="six">
-				<input class="u-full-width" placeholder="artist or genre" id="searchParameter">
-			</div>
-			<div class="six">
-			<input id=searchBtn class="button-primary" type="submit" value="submit">
-			</div>
-		</div>
-		<div class="row" id="mixTapeLabel">
-			<h1 id="userMixTapeName"></h1>
-			<div class="six">
-				<input class="u-full-width" placeholder="Name your Mix Tape" id="mixTapeName">
-			</div>
-			<div class="six">
-			<input id=submitName class="button-primary" type="submit" value="submit">
-			</div>
-		</div>
 		
+		<div class="two columns" id="savedPlaylistDisplay">
+			<label for="savedPlaylistDisplay">Previous Searches</label>	
+			<div class="container" id="prevContainer">
+
+			</div>
+		</div>
+		<div class="ten columns">
+			<div class="container">
+				<h1>Mix Tape Maker</h1>	
+				<form action="">
+					<div class="row">
+						<div class="six columns">
+							<label for="searchParameter">Search By Artist</label>
+							<input class="u-full-width" type="text" placeholder="Artist" id="searchParameter">
+						</div>
+						<div class="six columns">
+							<label for="userMixTapeName">Mix Tape Name</label>
+							<input class="u-full-width" type ="text" placeholder="My Killer Playlist" id="userMixTapeName">
+						</div>
+					</div>
+					<input class="button-primary" type="submit" value="Submit" id="searchBtn">
+				</form>
+			</div>
+			<button id="prev">Previous</button>
+			<button id="play">Play</button>
+			<button id="stop">Stop</button>
+			<button id="next">Next</button>
+			<div class="container" id="mixTapeList">
+				
+			</div>
+		</div>
 	</div>
-
-	<div class="container" id="mixTapeList">
-	<div class="container" id="MixTapeName">
-
-	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="assets/js/script.js"></script>
-
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="assets/js/script.js"></script>
 </body>
 </html>

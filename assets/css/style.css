@@ -1,4 +1,15 @@
-.row {
-    margin-left: auto;
-    margin-right: auto;
-}
+
+/* .previousList {
+    border-radius: 0px;
+    background-color: yellow;
+} */
+input.previousList {
+    color: gray;
+    width: 100px;
+    /* border-style: none; */
+    border-radius: 0px;
+    background: white;
+  }
+  body {
+    background-color: white;
+  }

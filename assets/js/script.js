@@ -1,103 +1,188 @@
 var APIKey = '400264-project1-2ZU40HSL';
-var unencodedBandName = ""
+var unencodedBandName = '';
+var playlistName = '';
+var songArr = [];
+var songIndex = 0;
+var savedPlaylist =[];
 
-$('#searchBtn').on("click",function(){
-	unencodedBandName = $('#searchParameter').val()
-	console.log(unencodedBandName)
-	var name=codeBandName(unencodedBandName)
-	console.log(name)
-	generateSimBandList(name)
-});
-
-// WORK ON PLAYLIST NAME FUNCTIONALITY
-// $('#submitName').on("click",function createH1Element(text) 
-// {
-//     var h = document.createElement("H1");
-//     var t = document.createTextNode(text); 
-//     h.appendChild(t); 
-//     document.body.appendChild(h);
-// });
-
-function generateSimBandList(name){
-	var queryURL = `https://tastedive.com/api/similar?q=${name}&k=${APIKey}`
-	$.ajax({
-		url:queryURL,
-		type:'GET',
-		dataType:'JSONP',
-		success:function(response){
-			console.log(response)
-			var bandNameArr = []
-			bandNameArr.push(unencodedBandName);
-			response.Similar.Results.forEach(band =>{
-				bandNameArr.push(band.Name)
-			})
-			console.log(bandNameArr);
-			getArtistTrackList(bandNameArr);
-		}
-	})
+function encodeBandName(band){
+	return band.replace(/ /g,"+");
 };
 
-function codeBandName(name){
-	return name.replace(/ /g,"+");
+function parseBandNames(response){
+	var bandArr = [];
+	bandArr.push(unencodedBandName);
+	response.Similar.Results.forEach(band => {
+		bandArr.push(band.Name);
+	}); 
+	return bandArr;
 };
 
 function generateRandomNumber(response){
-return Math.floor(Math.random() * response.data.length);
-}
+	return Math.floor(Math.random() * response.data.length);
 
-function getArtistTrackList(bandNameArr){
-	bandNameArr.forEach(bandname=>{
-		var queryURL = `https://api.deezer.com/search?q=${bandname}&output=jsonp`;
-		$.ajax({
-			url:queryURL,
-			type:'GET',
-			dataType:'JSONP',
-			success:function(response){
-				// console.log(response)
-				var AlbumNumber = generateRandomNumber(response)
-				var ArtistObj = {
-					artistId:response.data[AlbumNumber].artist.id,
-					albumId:response.data[AlbumNumber].album.id,
-					artistName:response.data[AlbumNumber].artist.name,
-					albumPicture:response.data[AlbumNumber].album.cover_small,
-					albumName:response.data[AlbumNumber].title,
-					tracklist:response.data[AlbumNumber].album.tracklist,
-				}
-				getTrack(ArtistObj);
-			}
-		})
-	})
 };
 
-function getTrack(ArtistObj){
-	var queryURL = `${ArtistObj.tracklist}&output=jsonp`;
+function generateSimilarBandList(bandName){
+	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
 	$.ajax({
-		url:queryURL,
-		type:"GET",
-		dataType:'JSONP',
-		success:function(response){
-			// console.log(response);
-			var trackNum = generateRandomNumber(response);
-			ArtistObj.track = response.data[trackNum].title;
-			ArtistObj.preview = response.data[trackNum].preview;
-
-			console.log(ArtistObj);
+		url: queryURL, 
+		type: "GET",
+		dataType: 'jsonp',
+		success: function(response){
+			var bandNameArr = parseBandNames(response);
+			console.log(bandNameArr);
+			getArtistTrackList(bandNameArr);
 		}
-	})
-}
+	}); 
+};
+
+function getArtistTrackList(bandNameArr){
+	bandNameArr.forEach(bandname =>{
+		var queryURL = `https://api.deezer.com/search?q=${bandname}&output=jsonp`; 
+		$.ajax({
+			url: queryURL,
+			type: "GET", 
+			dataType: 'jsonp', 
+			success: function(response){
+				var albumNumber = generateRandomNumber(response)
+				var artistObj = {
+					artistId: response.data[albumNumber].artist.id,
+					albumId: response.data[albumNumber].album.id, 
+					name: response.data[albumNumber].artist.name, 
+					albumPicture: response.data[albumNumber].album.cover_small,
+					tracklist: response.data[albumNumber].album.tracklist, 
+
+				}
+				getTrack(artistObj);
+			},
+		});
+	});
+};
+
+function getTrack(artistObj){
+	var queryURL = `${artistObj.tracklist}&output=jsonp`;
+	$.ajax({
+		url: queryURL, 
+		type: "GET",
+		dataType: 'jsonp', 
+		success: function(response){
+			var trackNum = generateRandomNumber(response);
+			artistObj.track = response.data[trackNum].title;
+			artistObj.preview = response.data[trackNum].preview; 
+
+			console.log(artistObj);
+
+			addToMixTape(artistObj);
+		}
+	});
+};
 
 function addToMixTape(artistObj){
-	var container = $("#mixTapeList");
-	var row = $("<div>").attr({"class": "row"})
-	var imgCol = $("<div>").attr({"class": "four"})
-	var textCol = $("<div>").attr({"class": "eight"})
+	var container = $("#mixTapeList"); 
+
+	var row = $("<div>").attr({"class": "row"});
+	var imgCol = $("<div>").attr({"class": "four"});
+	var textCol = $("<div>").attr({"class": "eight"});
+
 	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
 	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
 	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
-	imgCol.append(albumImg);
+	songArr.push(artistObj.preview);
+
+
+	imgCol.append(albumImg); 
 	textCol.append(albumArtist,albumSong);
-	row.append(imgCol, textCol)
-	container.append(row)
+
+	row.append(imgCol, textCol);
+	container.append(row);
+	addTosavedPlaylist(artistObj);
 };
 
-// generateSimilarBandList();
+function addTosavedPlaylist(artistObj){
+	if (localStorage.getItem(`${playlistName}`) === null){
+		savedPlaylist.push(artistObj);
+		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
+	}
+	else{
+		savedPlaylist = JSON.parse(localStorage.getItem(playlistName))
+		savedPlaylist.push(artistObj);
+		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
+    }
+
+}
+function getSavedPlaylist(playlistName){
+    savedPlaylist = JSON.parse(localStorage.getItem(playlistName));
+    savedPlaylist.forEach(artist => {
+        addToMixTape(artist);
+    })
+}
+function displaySavedPlaylists() {
+    var prevContainer = $('#prevContainer');
+    var previousPlaylists = $('<input>').attr({'type':'button', 'value':playlistName, 'class': 'previousList'});
+    prevContainer.prepend(previousPlaylists); 
+
+}
+
+function playSong(){
+	var currentSong = $("#song");
+	currentSong.attr({"src":songArr[songIndex]});
+	currentSong[0].play();		
+}
+
+function stopSong(){
+	var currentSong = $("#song");
+	console.log(currentSong.currentTime);
+	currentSong[0].pause();
+}
+
+function nextSong(){
+	if(songIndex === songArr.length-1){
+		songIndex = 0;
+	}else{
+		songIndex++; 
+	}
+	playSong(); 
+}
+
+function prevSong(){
+	if(songIndex === 0){
+		songIndex = songArr.length-1;
+		console.log(songIndex)
+	}else{
+		songIndex--; 
+	} 
+	playSong();
+}
+
+$("#searchBtn").on("click", function(event){
+	event.preventDefault();
+	unencodedBandName = $("#searchParameter").val();
+	playlistName = $("#userMixTapeName").val(); 
+	console.log(playlistName);
+	var bandName = encodeBandName(unencodedBandName);
+    generateSimilarBandList(bandName);
+    displaySavedPlaylists();
+});
+
+$("#prev").on("click", prevSong);
+$("#play").on("click", playSong);
+$("#stop").on("click", stopSong);
+$("#next").on("click", nextSong);
+
+$("#song").on("ended", function(){
+	if(songIndex < songArr.length){
+		setTimeout(function(){
+			songIndex++;
+			playSong();
+		},1000);	
+	}else{
+		songIndex = 0;
+		playSong();
+	}	
+});
+
+$(document).on("click", ".previousList", function(){
+    var playlistName = $(this).val();
+    getSavedPlaylist(playlistName);
+});
