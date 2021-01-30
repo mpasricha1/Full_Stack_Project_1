@@ -3,6 +3,7 @@ var unencodedBandName = '';
 var playlistName = '';
 var songArr = [];
 var songIndex = 0;
+var savedPlaylist =[];
 
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
@@ -100,8 +101,20 @@ function addToMixTape(artistObj){
 
 	row.append(imgCol, textCol);
 	container.append(row);
-
+	addTosavedPlaylist(artistObj);
 };
+
+function addTosavedPlaylist(artistObj){
+	if (localStorage.getItem(`${playlistName}`) === null){
+		savedPlaylist.push(artistObj);
+		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
+	}
+	else{
+		savedPlaylist = JSON.parse(localStorage.getItem(`${playlistName}`))
+		savedPlaylist.push(artistObj);
+		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
+	}
+}
 
 function playSong(){
 	var currentSong = $("#song");
