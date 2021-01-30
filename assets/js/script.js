@@ -14,12 +14,12 @@ function parseBandNames(response){
 		bandArr.push(band.Name);
 	}); 
 	return bandArr;
-}
+};
 
 function generateRandomNumber(response){
 	return Math.floor(Math.random() * response.data.length);
 
-}
+};
 
 function generateSimilarBandList(bandName){
 	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
@@ -33,7 +33,7 @@ function generateSimilarBandList(bandName){
 			getArtistTrackList(bandNameArr);
 		}
 	}); 
-}
+};
 
 function getArtistTrackList(bandNameArr){
 	bandNameArr.forEach(bandname =>{
@@ -54,9 +54,9 @@ function getArtistTrackList(bandNameArr){
 				}
 				getTrack(artistObj);
 			},
-		})
-	})
-}
+		});
+	});
+};
 
 function getTrack(artistObj){
 	var queryURL = `${artistObj.tracklist}&output=jsonp`;
@@ -74,33 +74,30 @@ function getTrack(artistObj){
 			addToMixTape(artistObj);
 			
 		}
-	})
-}
+	});
+};
 
 function addToMixTape(artistObj){
 	var container = $("#mixTapeList"); 
 
-	var row = $("<div>").attr({"class": "row"})
-	var imgCol = $("<div>").attr({"class": "four"})
-	var textCol = $("<div>").attr({"class": "eight"})
+	var row = $("<div>").attr({"class": "row"});
+	var imgCol = $("<div>").attr({"class": "four"});
+	var textCol = $("<div>").attr({"class": "eight"});
 
-	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
-	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
-	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
+	var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
+	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`);
+	var albumSong = $("<p>").html(`Album: ${artistObj.track}`);
 	songArr.push(artistObj.preview);
-	// var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${artistObj.albumId}`, "data-track": artistObj.track})
-	// var songButton = $("<button>").attr({"class":"playsong", "id":artistObj.albumId, "data-track": artistObj.track})
 
 	imgCol.append(albumImg); 
 	textCol.append(albumArtist,albumSong);
 
-	row.append(imgCol, textCol)
-	container.append(row)
+	row.append(imgCol, textCol);
+	container.append(row);
 
-}
+};
 
 function playSong(){
-	console.log(songIndex);
 	var currentSong = $("#song");
 	currentSong.attr({"src":songArr[songIndex]});
 	currentSong[0].play();		
@@ -113,7 +110,6 @@ function stopSong(){
 }
 
 function nextSong(){
-	console.log(songIndex);
 	if(songIndex === songArr.length-1){
 		songIndex = 0;
 	}else{
@@ -123,7 +119,6 @@ function nextSong(){
 }
 
 function prevSong(){
-	console.log(songIndex)
 	if(songIndex === 0){
 		songIndex = songArr.length-1;
 		console.log(songIndex)
