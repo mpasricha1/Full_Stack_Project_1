@@ -1,5 +1,7 @@
-var APIKey = '400264-project1-2ZU40HSL'
-var unencodedBandName = ''
+var APIKey = '400264-project1-2ZU40HSL';
+var unencodedBandName = '';
+var songArr = [];
+var songIndex = 0;
 
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
@@ -85,12 +87,12 @@ function addToMixTape(artistObj){
 	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
 	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
 	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
-	var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${artistObj.albumId}`, "data-track": artistObj.track})
-	var songButton = $("<button>").attr({"class":"playsong", "id":artistObj.albumId, "data-track": artistObj.track})
+	songArr.push(artistObj.preview);
+	// var songLink = $("<audio>").attr({"src": artistObj.preview, "id": `song${artistObj.albumId}`, "data-track": artistObj.track})
+	// var songButton = $("<button>").attr({"class":"playsong", "id":artistObj.albumId, "data-track": artistObj.track})
 
 	imgCol.append(albumImg); 
-	textCol.append(albumArtist,albumSong, songLink, songButton);
-
+	textCol.append(albumArtist,albumSong);
 
 	row.append(imgCol, textCol)
 	container.append(row)
@@ -101,13 +103,37 @@ $("#searchBtn").on("click", function(event){
 	unencodedBandName = $("#searchParameter").val();
 	var bandName = encodeBandName(unencodedBandName);
 	generateSimilarBandList(bandName);
-})
+});
 
-$(document).on("click", ".playsong", function(){
-	var songId = $(this)[0].id
-	console.log(songId)
-	var song = $(`#song${songId}`)
-	console.log(song)
-	song[0].play();
+
+$("#play").on("click", function(){
+	var currentSong = $("#song")
+	currentSong.attr({"src":songArr[songIndex]});
+	console.log(currentSong);
+	currentSong[0].play();		
+});
+
+$("#song").on("ended", function(){
+	if(songIndex < songArr.length){
+		setTimeout(function(){
+			var currentSong = $("#song")
+			songIndex++;
+			currentSong.attr({"src":songArr[songIndex]});
+			console.log(currentSong);
+			currentSong[0].play();
+		},2000);
+		
+	}else{
+		songIndex = 0;
+	}
 	
 });
+
+// $(document).on("click", ".playsong", function(){
+// 	var songId = $(this)[0].id
+// 	console.log(songId)
+// 	var song = $(`#song${songId}`)
+// 	console.log(song)
+// 	song[0].play();
+	
+// });
