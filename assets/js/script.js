@@ -73,12 +73,12 @@ function getTrack(artistObj){
 
 			console.log(artistObj);
 
-			addToMixTape(artistObj);
+			addToMixTape(artistObj, false);
 		}
 	});
 };
 
-function addToMixTape(artistObj){
+function addToMixTape(artistObj, dontAppend){
 	var container = $("#mixTapeList"); 
 
 	var row = $("<div>").attr({"class": "row"});
@@ -96,7 +96,14 @@ function addToMixTape(artistObj){
 
 	row.append(imgCol, textCol);
 	container.append(row);
-	addTosavedPlaylist(artistObj);
+
+	if(dontAppend === true){
+		console.log("in if statement")
+		return;
+	}else{
+		addTosavedPlaylist(artistObj);
+	}
+	
 };
 
 function addTosavedPlaylist(artistObj){
@@ -114,7 +121,7 @@ function addTosavedPlaylist(artistObj){
 function getSavedPlaylist(playlistName){
     savedPlaylist = JSON.parse(localStorage.getItem(playlistName));
     savedPlaylist.forEach(artist => {
-        addToMixTape(artist);
+    addToMixTape(artist, true);
     })
 }
 function displaySavedPlaylists() {
@@ -126,6 +133,7 @@ function displaySavedPlaylists() {
 
 function playSong(){
 	var currentSong = $("#song");
+	console.log(songArr);
 	currentSong.attr({"src":songArr[songIndex]});
 	currentSong[0].play();		
 }
@@ -155,14 +163,28 @@ function prevSong(){
 	playSong();
 }
 
+function clearGlobals(){
+	$("#mixTapeList").empty();
+    songArr = [];
+    savedPlaylist = [];
+    songIndex = 0
+}
+
 $("#searchBtn").on("click", function(event){
 	event.preventDefault();
+	clearGlobals();
+
 	unencodedBandName = $("#searchParameter").val();
 	playlistName = $("#userMixTapeName").val(); 
-	console.log(playlistName);
 	var bandName = encodeBandName(unencodedBandName);
+
     generateSimilarBandList(bandName);
     displaySavedPlaylists();
+
+    $("#searchParameter").val("");
+    $("#userMixTapeName").val("");
+    
+    
 });
 
 $("#prev").on("click", prevSong);
@@ -184,5 +206,7 @@ $("#song").on("ended", function(){
 
 $(document).on("click", ".previousList", function(){
     var playlistName = $(this).val();
+  
+    clearGlobals()
     getSavedPlaylist(playlistName);
 });
