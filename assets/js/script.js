@@ -110,18 +110,25 @@ function addTosavedPlaylist(artistObj){
 		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
 	}
 	else{
-		savedPlaylist = JSON.parse(localStorage.getItem(`${playlistName}`))
+		savedPlaylist = JSON.parse(localStorage.getItem(playlistName))
 		savedPlaylist.push(artistObj);
 		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
-	}
+    }
+
+}
+function getSavedPlaylist(playlistName){
+    savedPlaylist = JSON.parse(localStorage.getItem(playlistName));
+    savedPlaylist.forEach(artist => {
+        addToMixTape(artist);
+    })
 }
 function displaySavedPlaylists() {
     var prevContainer = $('#prevContainer');
+    var previousPlaylists = $('<input>').attr({'type':'button', 'value':playlistName, 'class': 'previousList'});
+    prevContainer.prepend(previousPlaylists); 
 
-    var previousPlaylists = $('<input>').attr({'type':'button', 'value':playlistName});
-    prevContainer.prepend(previousPlaylists);
-    
 }
+
 function playSong(){
 	var currentSong = $("#song");
 	currentSong.attr({"src":songArr[songIndex]});
@@ -178,4 +185,9 @@ $("#song").on("ended", function(){
 		songIndex = 0;
 		playSong();
 	}	
+});
+
+$(document).on("click", ".previousList", function(){
+    var playlistName = $(this).val();
+    getSavedPlaylist(playlistName);
 });

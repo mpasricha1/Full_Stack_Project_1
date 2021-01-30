@@ -1,0 +1,10 @@
+
+/* .previousList {
+    border-radius: 0px;
+    background-color: yellow;
+} */
+.previousList {
+    color: red;
+    width: 500px;
+    border: 1px solid black;
+  }
