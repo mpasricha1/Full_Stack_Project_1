@@ -115,7 +115,13 @@ function addTosavedPlaylist(artistObj){
 		localStorage.setItem(playlistName, JSON.stringify(savedPlaylist));
 	}
 }
+function displaySavedPlaylists() {
+    var prevContainer = $('#prevContainer');
 
+    var previousPlaylists = $('<input>').attr({'type':'button', 'value':playlistName});
+    prevContainer.prepend(previousPlaylists);
+    
+}
 function playSong(){
 	var currentSong = $("#song");
 	currentSong.attr({"src":songArr[songIndex]});
@@ -153,7 +159,8 @@ $("#searchBtn").on("click", function(event){
 	playlistName = $("#userMixTapeName").val(); 
 	console.log(playlistName);
 	var bandName = encodeBandName(unencodedBandName);
-	generateSimilarBandList(bandName);
+    generateSimilarBandList(bandName);
+    displaySavedPlaylists();
 });
 
 $("#prev").on("click", prevSong);
