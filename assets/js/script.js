@@ -100,9 +100,37 @@ function addToMixTape(artistObj){
 }
 
 function playSong(){
-	var currentSong = $("#song")
+	console.log(songIndex);
+	var currentSong = $("#song");
 	currentSong.attr({"src":songArr[songIndex]});
 	currentSong[0].play();		
+}
+
+function stopSong(){
+	var currentSong = $("#song");
+	console.log(currentSong.currentTime);
+	currentSong[0].pause();
+}
+
+function nextSong(){
+	console.log(songIndex);
+	if(songIndex === songArr.length-1){
+		songIndex = 0;
+	}else{
+		songIndex++; 
+	}
+	playSong(); 
+}
+
+function prevSong(){
+	console.log(songIndex)
+	if(songIndex === 0){
+		songIndex = songArr.length-1;
+		console.log(songIndex)
+	}else{
+		songIndex--; 
+	} 
+	playSong();
 }
 
 $("#searchBtn").on("click", function(event){
@@ -111,22 +139,21 @@ $("#searchBtn").on("click", function(event){
 	generateSimilarBandList(bandName);
 });
 
-
-$("#play").on("click", function(){
-	playSong();
-});
+$("#prev").on("click", prevSong);
+$("#play").on("click", playSong);
+$("#stop").on("click", stopSong);
+$("#next").on("click", nextSong);
 
 $("#song").on("ended", function(){
 	if(songIndex < songArr.length){
 		setTimeout(function(){
 			songIndex++;
-			playsong();
+			playSong();
 		},1000);	
 	}else{
 		songIndex = 0;
-		playsong();
-	}
-	
+		playSong();
+	}	
 });
 
 // $(document).on("click", ".playsong", function(){
