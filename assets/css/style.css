@@ -18,3 +18,14 @@
   background-color: black;
   text-align: center;
 }
+input.previousList {
+    color: gray;
+    width: 100px;
+    /* border-style: none; */
+    border-radius: 0px;
+    background: white;
+  }
+  body {
+    background-color: white;
+  }
+
