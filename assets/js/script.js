@@ -158,18 +158,19 @@ function getCurrentSong(){
 
 function playSong(){
 	var currentSong = $("#song");
+	var albumImage = $("#albumimage");
 
 	songToPlay = getCurrentSong();
 
 	currentSong.attr({"src":songToPlay.preview});
-	var albumImage = $("#albumimage");
 	albumImage.attr({"src":songToPlay.albumPicture});
 	albumImage.removeAttr("hidden");
+
 	$("#currentsong").text(songToPlay.track);
 	$("#currentartist").text(songToPlay.name); 
 	$("#currentalbum").text(songToPlay.albumName);
 
-		currentSong[0].play();		
+	currentSong[0].play();		
 }
 
 function stopSong(){
@@ -194,7 +195,10 @@ function prevSong(){
 	} 
 	playSong();
 }
+//******************************************************************************
 
+//******************************************************************************
+// Function to reset global variabled used throughout the page
 function clearGlobals(){
 	$("#mixTapeList").empty();
     songArr = [];
@@ -209,7 +213,7 @@ function clearGlobals(){
 function searchForArtist(){
 	event.preventDefault();
 	clearGlobals();
-	stopSong();
+	// stopSong();
 
 	unencodedBandName = $("#searchParameter").val();
 	playlistName = $("#userMixTapeName").val(); 
@@ -238,7 +242,7 @@ function switchPlaylist(){
 	playlistName = $(this).val();
   
     clearGlobals();
-    stopSong();
+    // stopSong();
     getSavedPlaylist(playlistName);
 };
 //**************************************************************************
