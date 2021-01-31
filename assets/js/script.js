@@ -5,6 +5,7 @@ var songArr = [];
 var songIndex = 0;
 var savedPlaylist =[];
 var songToPlay = '';
+var trackCounter = 0; 
 
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
@@ -80,35 +81,40 @@ function getTrack(artistObj){
 };
 
 function addToMixTape(artistObj, dontAppend){
-	var container = $("#mixTapeList"); 
+	if(trackCounter < 10){
+		var container = $("#mixTapeList"); 
 
-	var row = $("<div>").attr({"class": "row"});
-	var imgCol = $("<div>").attr({"class": "one column"});
-	var trackTitle = $("<div>").attr({"class": "three columns"});
-	var artistName = $("<div>").attr({"class": "three columns"});
-	var albumName = $("<div>").attr({"class": "three columns"});
+		var row = $("<div>").attr({"class": "row"});
+		var imgCol = $("<div>").attr({"class": "one column"});
+		var trackTitle = $("<div>").attr({"class": "three columns"});
+		var artistName = $("<div>").attr({"class": "three columns"});
+		var albumName = $("<div>").attr({"class": "three columns"});
 
-	var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
-	var albumArtist = $("<p>").html(artistObj.name);
-	var albumSong = $("<p>").html(artistObj.track);
-	var albumName = $("<p>").html(artistObj.albumName);
+		var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
+		var albumArtist = $("<p>").html(artistObj.name);
+		var albumSong = $("<p>").html(artistObj.track);
+		var albumName = $("<p>").html(artistObj.albumName);
 
 	// songArr.push(artistObj.preview);
 
 
-	imgCol.append(albumImg); 
-	trackTitle.append(albumSong);
-	artistName.append(albumArtist);
+		imgCol.append(albumImg); 
+		trackTitle.append(albumSong);
+		artistName.append(albumArtist);
 
-	row.append(imgCol, trackTitle, artistName, albumName);
-	container.append(row);
+		row.append(imgCol, trackTitle, artistName, albumName);
+		container.append(row);
+		trackCounter++;
 
-	if(dontAppend === true){
-		console.log("in if statement")
-		return;
+		if(dontAppend === true){
+			return;
+		}else{
+			addTosavedPlaylist(artistObj);
+		}
 	}else{
-		addTosavedPlaylist(artistObj);
+		return;
 	}
+	
 	
 };
 
