@@ -1,3 +1,4 @@
+// Various global functions used throughout the page
 var APIKey = '400264-project1-2ZU40HSL';
 var unencodedBandName = '';
 var playlistName = '';
@@ -7,6 +8,8 @@ var savedPlaylist =[];
 var songToPlay = '';
 var trackCounter = 0; 
 
+//*****************************************************************************
+// Helper functions for various tasks for the api calls
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
 };
@@ -22,9 +25,12 @@ function parseBandNames(response){
 
 function generateRandomNumber(response){
 	return Math.floor(Math.random() * response.data.length);
-
 };
 
+//*****************************************************************************
+
+//*****************************************************************************
+// Thee API call functions 
 function generateSimilarBandList(bandName){
 	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
 	$.ajax({
@@ -79,7 +85,8 @@ function getTrack(artistObj){
 		}
 	});
 };
-
+//**************************************************************************
+// These functions deal with dynamic content on the page
 function addToMixTape(artistObj, dontAppend){
 	if(trackCounter < 10){
 		var container = $("#mixTapeList"); 
@@ -94,9 +101,6 @@ function addToMixTape(artistObj, dontAppend){
 		var albumArtist = $("<p>").html(artistObj.name);
 		var albumSong = $("<p>").html(artistObj.track);
 		var albumName = $("<p>").html(artistObj.albumName);
-
-	// songArr.push(artistObj.preview);
-
 
 		imgCol.append(albumImg); 
 		trackTitle.append(albumSong);
@@ -113,9 +117,7 @@ function addToMixTape(artistObj, dontAppend){
 		}
 	}else{
 		return;
-	}
-	
-	
+	}	
 };
 
 function addTosavedPlaylist(artistObj){
@@ -142,7 +144,10 @@ function displaySavedPlaylists() {
     prevContainer.prepend(previousPlaylists); 
 
 }
+//*****************************************************************************
 
+//*****************************************************************************
+// Functions for the audio player
 function getCurrentSong(){
 	songArr = JSON.parse(localStorage.getItem(playlistName)); 
 	currentSong = songArr[songIndex]; 
@@ -194,9 +199,13 @@ function clearGlobals(){
 	$("#mixTapeList").empty();
     songArr = [];
     savedPlaylist = [];
-    songIndex = 0
+    songIndex = 0;
+    trackCounter = 0;
 }
+//******************************************************************************
 
+//******************************************************************************
+// Functions for button click events to search the page and change saved playlists 
 function searchForArtist(){
 	event.preventDefault();
 	clearGlobals();
@@ -232,7 +241,10 @@ function switchPlaylist(){
     stopSong();
     getSavedPlaylist(playlistName);
 };
+//**************************************************************************
 
+//**************************************************************************
+// Button click events 
 $("#searchBtn").on("click", searchForArtist)
 $("#prev").on("click", prevSong);
 $("#play").on("click", playSong);
@@ -240,3 +252,4 @@ $("#stop").on("click", stopSong);
 $("#next").on("click", nextSong);
 $("#song").on("ended", nextSongAfterEnd)
 $(document).on("click", ".previousList", switchPlaylist)
+//***************************************************************************
