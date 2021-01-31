@@ -147,9 +147,18 @@ function getCurrentSong(){
 
 function playSong(){
 	var currentSong = $("#song");
+
 	songToPlay = getCurrentSong();
+
 	currentSong.attr({"src":songToPlay.preview});
-	currentSong[0].play();		
+	var albumImage = $("#albumimage");
+	albumImage.attr({"src":songToPlay.albumPicture});
+	albumImage.removeAttr("hidden");
+	$("#currentsong").text(songToPlay.track);
+	$("#currentartist").text(songToPlay.name); 
+	$("#currentalbum").text(songToPlay.albumName);
+
+		currentSong[0].play();		
 }
 
 function stopSong(){
@@ -182,7 +191,7 @@ function clearGlobals(){
     songIndex = 0
 }
 
-$("#searchBtn").on("click", function(event){
+function searchForArtist(){
 	event.preventDefault();
 	clearGlobals();
 	stopSong();
@@ -196,16 +205,9 @@ $("#searchBtn").on("click", function(event){
 
     $("#searchParameter").val("");
     $("#userMixTapeName").val("");
-    
-    
-});
+}
 
-$("#prev").on("click", prevSong);
-$("#play").on("click", playSong);
-$("#stop").on("click", stopSong);
-$("#next").on("click", nextSong);
-
-$("#song").on("ended", function(){
+function nextSongAfterEnd(){
 	if(songIndex < songArr.length){
 		setTimeout(function(){
 			songIndex++;
@@ -215,12 +217,20 @@ $("#song").on("ended", function(){
 		songIndex = 0;
 		playSong();
 	}	
-});
+};
 
-$(document).on("click", ".previousList", function(){
-    playlistName = $(this).val();
+function switchPlaylist(){
+	playlistName = $(this).val();
   
     clearGlobals();
     stopSong();
     getSavedPlaylist(playlistName);
-});
+};
+
+$("#searchBtn").on("click", searchForArtist)
+$("#prev").on("click", prevSong);
+$("#play").on("click", playSong);
+$("#stop").on("click", stopSong);
+$("#next").on("click", nextSong);
+$("#song").on("ended", nextSongAfterEnd)
+$(document).on("click", ".previousList", switchPlaylist)
