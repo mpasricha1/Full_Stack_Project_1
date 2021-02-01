@@ -1,10 +1,15 @@
+// Various global functions used throughout the page
 var APIKey = '400264-project1-2ZU40HSL';
 var unencodedBandName = '';
 var playlistName = '';
 var songArr = [];
 var songIndex = 0;
 var savedPlaylist =[];
+var songToPlay = '';
+var trackCounter = 0; 
 
+//*****************************************************************************
+// Helper functions for various tasks for the api calls
 function encodeBandName(band){
 	return band.replace(/ /g,"+");
 };
@@ -20,9 +25,12 @@ function parseBandNames(response){
 
 function generateRandomNumber(response){
 	return Math.floor(Math.random() * response.data.length);
-
 };
 
+//*****************************************************************************
+
+//*****************************************************************************
+// Thee API call functions 
 function generateSimilarBandList(bandName){
 	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
 	$.ajax({
@@ -45,6 +53,7 @@ function getArtistTrackList(bandNameArr){
 			type: "GET", 
 			dataType: 'jsonp', 
 			success: function(response){
+				console.log(response)
 				var albumNumber = generateRandomNumber(response)
 				var artistObj = {
 					artistId: response.data[albumNumber].artist.id,
@@ -52,6 +61,7 @@ function getArtistTrackList(bandNameArr){
 					name: response.data[albumNumber].artist.name, 
 					albumPicture: response.data[albumNumber].album.cover_small,
 					tracklist: response.data[albumNumber].album.tracklist, 
+					albumName: response.data[albumNumber].album.title
 
 				}
 				getTrack(artistObj);
@@ -71,32 +81,43 @@ function getTrack(artistObj){
 			artistObj.track = response.data[trackNum].title;
 			artistObj.preview = response.data[trackNum].preview; 
 
-			console.log(artistObj);
-
-			addToMixTape(artistObj);
+			addToMixTape(artistObj, false);
 		}
 	});
 };
+//**************************************************************************
+// These functions deal with dynamic content on the page
+function addToMixTape(artistObj, dontAppend){
+	if(trackCounter < 10){
+		var container = $("#mixTapeList"); 
 
-function addToMixTape(artistObj){
-	var container = $("#mixTapeList"); 
+		var row = $("<div>").attr({"class": "row"});
+		var imgCol = $("<div>").attr({"class": "one column"});
+		var trackTitle = $("<div>").attr({"class": "three columns"});
+		var artistName = $("<div>").attr({"class": "three columns"});
+		var albumName = $("<div>").attr({"class": "three columns"});
 
-	var row = $("<div>").attr({"class": "row"});
-	var imgCol = $("<div>").attr({"class": "four"});
-	var textCol = $("<div>").attr({"class": "eight"});
+		var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
+		var albumArtist = $("<p>").html(artistObj.name);
+		var albumSong = $("<p>").html(artistObj.track);
+		var albumName = $("<p>").html(artistObj.albumName);
 
-	var albumImg = $("<img>").attr({"src":artistObj.albumPicture})
-	var albumArtist = $("<p>").html(`Artist: ${artistObj.name}`)
-	var albumSong = $("<p>").html(`Album: ${artistObj.track}`)
-	songArr.push(artistObj.preview);
+		imgCol.append(albumImg); 
+		trackTitle.append(albumSong);
+		artistName.append(albumArtist);
 
+		row.append(imgCol, trackTitle, artistName, albumName);
+		container.append(row);
+		trackCounter++;
 
-	imgCol.append(albumImg); 
-	textCol.append(albumArtist,albumSong);
-
-	row.append(imgCol, textCol);
-	container.append(row);
-	addTosavedPlaylist(artistObj);
+		if(dontAppend === true){
+			return;
+		}else{
+			addTosavedPlaylist(artistObj);
+		}
+	}else{
+		return;
+	}	
 };
 
 function addTosavedPlaylist(artistObj){
@@ -114,7 +135,7 @@ function addTosavedPlaylist(artistObj){
 function getSavedPlaylist(playlistName){
     savedPlaylist = JSON.parse(localStorage.getItem(playlistName));
     savedPlaylist.forEach(artist => {
-        addToMixTape(artist);
+    addToMixTape(artist, true);
     })
 }
 function displaySavedPlaylists() {
@@ -123,16 +144,37 @@ function displaySavedPlaylists() {
     prevContainer.prepend(previousPlaylists); 
 
 }
+//*****************************************************************************
+
+//*****************************************************************************
+// Functions for the audio player
+function getCurrentSong(){
+	songArr = JSON.parse(localStorage.getItem(playlistName)); 
+	currentSong = songArr[songIndex]; 
+	console.log(currentSong);
+
+	return currentSong;
+}
 
 function playSong(){
 	var currentSong = $("#song");
-	currentSong.attr({"src":songArr[songIndex]});
+	var albumImage = $("#albumimage");
+
+	songToPlay = getCurrentSong();
+
+	currentSong.attr({"src":songToPlay.preview});
+	albumImage.attr({"src":songToPlay.albumPicture});
+	albumImage.removeAttr("hidden");
+
+	$("#currentsong").text(songToPlay.track);
+	$("#currentartist").text(songToPlay.name); 
+	$("#currentalbum").text(songToPlay.albumName);
+
 	currentSong[0].play();		
 }
 
 function stopSong(){
 	var currentSong = $("#song");
-	console.log(currentSong.currentTime);
 	currentSong[0].pause();
 }
 
@@ -148,29 +190,43 @@ function nextSong(){
 function prevSong(){
 	if(songIndex === 0){
 		songIndex = songArr.length-1;
-		console.log(songIndex)
 	}else{
 		songIndex--; 
 	} 
 	playSong();
 }
+//******************************************************************************
 
-$("#searchBtn").on("click", function(event){
+//******************************************************************************
+// Function to reset global variabled used throughout the page
+function clearGlobals(){
+	$("#mixTapeList").empty();
+    songArr = [];
+    savedPlaylist = [];
+    songIndex = 0;
+    trackCounter = 0;
+}
+//******************************************************************************
+
+//******************************************************************************
+// Functions for button click events to search the page and change saved playlists 
+function searchForArtist(){
 	event.preventDefault();
+	clearGlobals();
+	// stopSong();
+
 	unencodedBandName = $("#searchParameter").val();
 	playlistName = $("#userMixTapeName").val(); 
-	console.log(playlistName);
 	var bandName = encodeBandName(unencodedBandName);
+
     generateSimilarBandList(bandName);
     displaySavedPlaylists();
-});
 
-$("#prev").on("click", prevSong);
-$("#play").on("click", playSong);
-$("#stop").on("click", stopSong);
-$("#next").on("click", nextSong);
+    $("#searchParameter").val("");
+    $("#userMixTapeName").val("");
+}
 
-$("#song").on("ended", function(){
+function nextSongAfterEnd(){
 	if(songIndex < songArr.length){
 		setTimeout(function(){
 			songIndex++;
@@ -180,9 +236,24 @@ $("#song").on("ended", function(){
 		songIndex = 0;
 		playSong();
 	}	
-});
+};
 
-$(document).on("click", ".previousList", function(){
-    var playlistName = $(this).val();
+function switchPlaylist(){
+	playlistName = $(this).val();
+  
+    clearGlobals();
+    // stopSong();
     getSavedPlaylist(playlistName);
-});
+};
+//**************************************************************************
+
+//**************************************************************************
+// Button click events 
+$("#searchBtn").on("click", searchForArtist)
+$("#prev").on("click", prevSong);
+$("#play").on("click", playSong);
+$("#stop").on("click", stopSong);
+$("#next").on("click", nextSong);
+$("#song").on("ended", nextSongAfterEnd)
+$(document).on("click", ".previousList", switchPlaylist)
+//***************************************************************************

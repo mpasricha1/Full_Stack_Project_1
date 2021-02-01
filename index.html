@@ -35,16 +35,35 @@
 					<input class="button-primary" type="submit" value="Submit" id="searchBtn">
 				</form>
 			</div>
-			<button id="prev">Previous</button>
-			<button id="play">Play</button>
-			<button id="stop">Stop</button>
-			<button id="next">Next</button>
 			<div class="container" id="mixTapeList">
 				
 			</div>
 		</div>
+		<div class="container" id="mediaplayer">
+			<div class="row">
+				<div class="three columns" id="mediacontrols">
+					<img src="https://img.icons8.com/material-rounded/48/000000/rewind.png" type="button" id="prev"/>
+					<img src="https://img.icons8.com/material-rounded/48/000000/play--v1.png" type="button" id="play"/>
+					<img src="https://img.icons8.com/material-rounded/48/000000/stop.png" type="button" id="stop"/>
+					<img src="https://img.icons8.com/material-rounded/48/000000/fast-forward.png" type="button" id="next"/>
+				</div>
+				<div class="one column">
+					<img src="" hidden id="albumimage">
+				</div>
+				<div class="two columns">
+					<p id="currentsong"></p>
+				</div>
+				<div class="two columns">
+					<p id="currentartist"></p>
+				</div>
+				<div class="three columns">
+					<p id="currentalbum"></p>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+<!-- <a href='https://dryicons.com/free-icons/media-player-icons'> Icon by Dryicons </a> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="assets/js/script.js"></script>
 </body>

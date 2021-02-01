@@ -1,8 +1,23 @@
 
-/* .previousList {
-    border-radius: 0px;
-    background-color: yellow;
-} */
+
+.previousList {
+    color: red;
+    width: 500px;
+    border: 1px solid black;
+  }
+
+#mediaplayer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  color: white;
+  margin-left: 50%;
+  transform: translate(-50%, 0);
+  background-color: #29a395;
+/*  background-color: black;*/
+}
 input.previousList {
     color: gray;
     width: 100px;
@@ -10,7 +25,7 @@ input.previousList {
     border-radius: 0px;
     background: white;
   }
-  h1, label {
+  h1 {
     font-family: "Permanent Marker";
     text-align: center;
   }
@@ -21,3 +36,9 @@ input.previousList {
     background-image: url("../images/background.jpg");
     background-color: #cccccc;
    }
+p {
+  margin-left: 10px;
+}
+.container {
+  max-width: 100%;
+ }
