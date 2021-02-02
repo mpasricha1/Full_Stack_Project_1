@@ -16,11 +16,12 @@
   margin-left: 50%;
   transform: translate(-50%, 0);
   background-color: #29a395;
+  opacity: 50%;
 /*  background-color: black;*/
 }
 input.previousList {
     color: gray;
-    width: 100px;
+    width: 150px;
     /* border-style: none; */
     border-radius: 0px;
     background: white;
@@ -28,17 +29,46 @@ input.previousList {
   h1 {
     font-family: "Permanent Marker";
     text-align: center;
+    margin-top: 10%;
   }
  label {
+    margin-top: 10%;
     font-family: "Permanent Marker";
   }
-  body {
+body {
     background-image: url("../images/background.jpg");
     background-color: #cccccc;
-   }
+  }
 p {
-  margin-left: 10px;
+  margin-left: 40px;
 }
 .container {
   max-width: 100%;
+  width: 90%;
  }
+ .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border-radius: 10%;
+}
+#mixTapeList.row {
+  margin: 10px 10px 10px 10px;
+}
+#albumImg {
+  height: 75px;
+  margin: 0px 0px 10px 0px;
+}
+#mediacontrols {
+ 
+  padding: 0px 20px;
+} 
+#searchBtnDiv {
+  position: relative;
+}
+#searchBtn {
+  background-color: #29a395;
+  position: absolute;
+  bottom:0;
+}

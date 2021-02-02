@@ -96,8 +96,8 @@ function addToMixTape(artistObj, dontAppend){
 		var trackTitle = $("<div>").attr({"class": "three columns"});
 		var artistName = $("<div>").attr({"class": "three columns"});
 		var albumName = $("<div>").attr({"class": "three columns"});
-
-		var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
+		var albumImg = $("<img>").attr({"src":artistObj.albumPicture, "id": "albumImg"});
+		//var albumImg = $("<img>").attr({"src":artistObj.albumPicture});
 		var albumArtist = $("<p>").html(artistObj.name);
 		var albumSong = $("<p>").html(artistObj.track);
 		var albumName = $("<p>").html(artistObj.albumName);
