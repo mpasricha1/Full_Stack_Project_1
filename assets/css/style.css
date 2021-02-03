@@ -1,39 +1,45 @@
 
 
-.previousList {
+ /* .previousList {
     color: red;
     width: 500px;
     border: 1px solid black;
-  }
+  }  */
+body {
+  font-family: "Permanent Marker";
+}
 
 #mediaplayer {
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 50px;
+  height: 65px;
   color: white;
   margin-left: 50%;
   transform: translate(-50%, 0);
   background-color: #29a395;
-  /* opacity: 50%; */
+  opacity: 70%;
+  padding: 5px 0px 0px 0px;
 /*  background-color: black;*/
 }
 input.previousList {
-    color: gray;
-    width: 150px;
-    /* border-style: none; */
-    border-radius: 0px;
-    background: white;
+    width: 200px;
+    text-align: left;
+    border: none;
+    background: none;
+    
+    color: black;
   }
   h1 {
-    font-family: "Permanent Marker";
+    
     text-align: center;
     margin-top: 10%;
   }
  label {
     margin-top: 10%;
     font-family: "Permanent Marker";
+
   }
 body {
     background-image: url("../images/background.jpg");
@@ -44,7 +50,7 @@ p {
 }
 .container {
   max-width: 100%;
-  width: 90%;
+  width: 95%;
  }
  .center {
   display: block;
@@ -60,10 +66,10 @@ p {
   height: 75px;
   margin: 0px 0px 10px 0px;
 }
-/* #mediacontrols {
+#mediacontrols {
  
   padding: 0px 20px;
-}  */
+}  
 #searchBtnDiv {
   position: relative;
 }
@@ -73,5 +79,5 @@ p {
   bottom:0;
 }
 #mixTapeList{
-  padding: 0px 0px 50px 0px;
+  padding: 0px 0px 65px 0px;
 }
