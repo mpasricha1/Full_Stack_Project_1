@@ -3,6 +3,8 @@ Overview
 
 http://mix-tape-maker.herokuapp.com/
 
+Presntation link: https://prezi.com/view/sf3qHDVasAEwsRhcaomZ/
+
 Technologies used:
 
 * Skeleton Framework
