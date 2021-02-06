@@ -3,9 +3,10 @@
 
 http://mix-tape-maker.herokuapp.com/
 
-## Presentation link: https://prezi.com/view/sf3qHDVasAEwsRhcaomZ/
+## Presentation link
+https://prezi.com/view/sf3qHDVasAEwsRhcaomZ/
 
-## Technologies used:
+## Technologies used
 
 * Skeleton Framework
 * HTML
@@ -21,7 +22,7 @@ The user can name the playlist and it’s saved to a list of playlists. A media 
 ![image](https://user-images.githubusercontent.com/15931465/107121616-66c16980-6861-11eb-800c-a274a0a2c16b.png)
 ![image](https://user-images.githubusercontent.com/15931465/107121620-6f19a480-6861-11eb-81c6-f48106a592fa.png)
 
-## APIs used:
+## APIs used
 ### TasteDive
 The Taste Dive API provided us with a list of simliar band names. The endpoint took one argument and that was a band name to search on. 
 
