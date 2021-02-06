@@ -30,7 +30,7 @@ function generateRandomNumber(response){
 //*****************************************************************************
 
 //*****************************************************************************
-// Thee API call functions 
+// Three API call functions 
 function generateSimilarBandList(bandName){
 	var queryURL = `https://tastedive.com/api/similar?q=${bandName}&k=${APIKey}`
 	$.ajax({
